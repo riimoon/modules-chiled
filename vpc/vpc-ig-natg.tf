@@ -31,21 +31,21 @@ resource "aws_eip" "my_eip" {
   }
 }
 
-# My NAT Gateway
-resource "aws_nat_gateway" "my_nat_gateway" {
-  count          = length(aws_subnet.public_subnets)
-  allocation_id  = aws_eip.my_eip[count.index].id
-  subnet_id      = aws_subnet.public_subnets[count.index].id
+# # My NAT Gateway
+# resource "aws_nat_gateway" "my_nat_gateway" {
+#   count          = length(aws_subnet.public_subnets)
+#   allocation_id  = aws_eip.my_eip[count.index].id
+#   subnet_id      = aws_subnet.public_subnets[count.index].id
 
-  tags = {
-    Name = "MyNATGateway-${count.index + 1}"
-  }
-}
+#   tags = {
+#     Name = "MyNATGateway-${count.index + 1}"
+#   }
+# }
 
-# NAT Gateway Route
-resource "aws_route" "nat_gateway_route" {
-  count                  = length(aws_subnet.public_subnets)
-  route_table_id         = aws_route_table.private_route_table[count.index].id
-  destination_cidr_block = "0.0.0.0/0"
-  nat_gateway_id         = aws_nat_gateway.my_nat_gateway[count.index].id
-}
+# # NAT Gateway Route
+# resource "aws_route" "nat_gateway_route" {
+#   count                  = length(aws_subnet.public_subnets)
+#   route_table_id         = aws_route_table.private_route_table[count.index].id
+#   destination_cidr_block = "0.0.0.0/0"
+#   nat_gateway_id         = aws_nat_gateway.my_nat_gateway[count.index].id
+# }
